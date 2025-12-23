@@ -23,15 +23,12 @@ def print_stat(values: List[float]):
     print(f"Min:\t{min(values):.1f} microseconds")
     print(f"Max:\t{max(values):.1f} microseconds")
 
-def main(conf: zenoh.Config, key: str, psize: int, iter: int, debug: bool):
+def main(conf: zenoh.Config, key_pub: str, key_sub: str, psize: int, iter: int, debug: bool):
     # initiate logging
     zenoh.init_log_from_env_or("error")
 
     print("Opening session...")
     with zenoh.open(conf) as session:
-        key_pub = f"{key}/ping"
-        key_sub = key_pub
-        # key_sub = f"{key}/pong"
         e = Event()
         time_elapse = []
 
@@ -82,12 +79,20 @@ if __name__ == "__main__":
     )
     common.add_config_arguments(parser)
     parser.add_argument(
-        "--key",
-        "-k",
-        dest="key",
-        default="demo/example",
+        "--pub",
+        "-1",
+        dest="pub",
+        default="demo/example/ping",
         type=str,
         help="The key expression to publish onto.",
+    )
+    parser.add_argument(
+        "--sub",
+        "-2",
+        dest="sub",
+        default="demo/example/pong",
+        type=str,
+        help="The key expression to subscribe to.",
     )
     parser.add_argument(
         "--iter",
@@ -115,4 +120,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     conf = common.get_config_from_args(args)
 
-    main(conf, args.key, args.psize, args.iter, args.debug)
+    main(conf, args.pub, args.sub, args.psize, args.iter, args.debug)
