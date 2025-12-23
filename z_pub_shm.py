@@ -1,3 +1,13 @@
+"""
+z_pub_shm — Example zenoh publisher using POSIX shared memory (SHM) provider.
+
+Usage:
+    python z_pub_shm.py [--pub KEY] [--sub KEY] [--iter N] [--psize BYTES] [--debug]
+
+This script publishes messages via a SHM provider and measures round-trip
+latency when a corresponding subscriber echoes messages back. It relies on
+the helper `common` module for configuration and the `Payload` type.
+"""
 from datetime import datetime
 import random
 import string

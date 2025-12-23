@@ -1,3 +1,13 @@
+"""
+z_fwd_shm — Forwarder using POSIX shared memory (SHM) provider.
+
+Usage:
+    python z_fwd_shm.py [--pub KEY] [--sub KEY] [--debug]
+
+This small utility subscribes to a `key_sub` key and republishes
+received samples onto `key_pub` key.
+"""
+
 import zenoh
 from common import Payload
 
