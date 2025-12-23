@@ -64,9 +64,10 @@ def main(conf: zenoh.Config, key_pub: str, key_sub: str, psize: int, iter: int, 
             print(f"Putting Data ('{key_pub}': '{sbuf}')...") if debug else None
             pub.put(sbuf)
 
-            # Wait for sbscriber to receive the message.
+            # Wait for subscriber to receive the message.
             e.clear()
-            e.wait()
+            if not e.wait(5):
+                print(f"=> Put timeout!")
     
     if len(time_elapse) != iter:
         raise Exception(f"Got {len(time_elapse)} messages, expected {iter}!")
