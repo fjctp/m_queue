@@ -12,14 +12,16 @@ import zenoh
 def generate_rand_str(size: int = 10) -> str:
     return ''.join(random.choices(string.ascii_letters + string.digits, k=size))
 
-def print_stat(values: List[float]):
-    nn = len(values)
-    mean = sum(values) / nn
-    stddev = sqrt( sum( [(x - mean)**2 for x in values] ) / nn)
+def print_stat(values: List[float], title: str):
+    mean = lambda vals : sum(vals) / len(vals)
+    def stddev(vals: List[float]) -> float:
+        mu = mean(vals)
+        return sqrt( sum( [(x - mu)**2 for x in vals] ) / len(vals))
 
     print("")
-    print(f"Mean:\t{mean:.1f} microseconds")
-    print(f"sDev:\t{stddev:.1f} microseconds")
+    print(title + ":")
+    print(f"Mean:\t{mean(values):.1f} microseconds")
+    print(f"sDev:\t{stddev(values):.1f} microseconds")
     print(f"Min:\t{min(values):.1f} microseconds")
     print(f"Max:\t{max(values):.1f} microseconds")
 
@@ -67,8 +69,8 @@ def main(conf: zenoh.Config, key_pub: str, key_sub: str, psize: int, iter: int, 
             e.wait()
     
     assert(len(time_elapse) == iter)
-    print_stat(time_elapse)
-    print()
+    print_stat(time_elapse, "Stats")
+    print_stat(time_elapse[2:], "Stats w/o 1st message") # discard the 1st message due to overhead.
     
     print([round(x, 2) for x in time_elapse]) if debug else None
 
