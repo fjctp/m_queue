@@ -68,7 +68,9 @@ def main(conf: zenoh.Config, key_pub: str, key_sub: str, psize: int, iter: int, 
             e.clear()
             e.wait()
     
-    assert(len(time_elapse) == iter)
+    if len(time_elapse) != iter:
+        raise Exception(f"Got {len(time_elapse)} messages, expected {iter}!")
+    
     print_stat(time_elapse, "Stats")
     print_stat(time_elapse[2:], "Stats w/o 1st message") # discard the 1st message due to overhead.
     
