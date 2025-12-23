@@ -68,6 +68,9 @@ def main(conf: zenoh.Config, key_pub: str, key_sub: str, psize: int, iter: int, 
     
     assert(len(time_elapse) == iter)
     print_stat(time_elapse)
+    print()
+    
+    print([round(x, 2) for x in time_elapse]) if debug else None
 
 if __name__ == "__main__":
     import argparse
