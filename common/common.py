@@ -3,7 +3,6 @@ import json
 
 import zenoh
 
-
 def add_config_arguments(parser: argparse.ArgumentParser):
     parser.add_argument(
         "--mode",

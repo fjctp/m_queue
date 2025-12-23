@@ -3,7 +3,7 @@ sub:
   python3 z_sub_shm.py
 
 pub:
-  python3 z_pub_shm.py
+  python3 z_pub_shm.py -i 20 -s 1024
 
 init:
   python3 -m venv .venv
