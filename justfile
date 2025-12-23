@@ -1,11 +1,11 @@
 
-sub:
-  python3 z_sub_shm.py
+fwd OPT="":
+  python3 z_fwd_shm.py {{OPT}}
 
-pub:
-  python3 z_pub_shm.py -i 20 -s 1024
+pub OPT="":
+  python3 z_pub_shm.py -i 20 -s 1024 {{OPT}}
 
-pubsub:
+pubsub OPT="":
   python3 z_pub_shm.py -1 'demo/example/ping' -2 'demo/example/ping' -i 20 -s 1024
 
 init:
