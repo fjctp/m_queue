@@ -10,8 +10,9 @@ Based on [zenoh-python examples](https://github.com/eclipse-zenoh/zenoh-python/t
 Ran a round trip latency test in a single process (`just pubsub`) and with two processes (`just fwd & just pub`).
 
 - v1.7.0: mixed result.
-  - Single and two-process test worked out-of-the-box on [MacOS]. No additional configuration is needed (No `zenohd` router).
-  - Single process test worked out-of-the-box on [NixOS], but two-process test failed to discover the other due to multicast not enabled by default for `lo` device.
+  - Single host [MacOS]: Single and two-process test worked out-of-the-box. No additional configuration is needed (No `zenohd` router).
+  - Single host [NixOS]: Single process test worked out-of-the-box, but two-process test failed to discover the other due to multicast not enabled by default for `lo` device.
+  - Two hosts ([NixOS] -> [MacOS]): need `zenohd` router and start python script with `--connect tcp/{ZENOH_ROUTER_IP}:7447`.
 
 ```bash
 # Turn on mutlicast on loopback
@@ -23,7 +24,7 @@ sudo ip route add 224.0.0.0/4 dev lo
 ### Test Stats
 There are overhead associated with the 1st message. Look at the stats with and without the 1st message.
 
-**Test result from single process test.**
+**Single process**
 ```
 Stats:
 Mean:	297.5 microseconds
@@ -38,7 +39,7 @@ Min:	26.0 microseconds
 Max:	89.9 microseconds
 ```
 
-**Test result from two-process test.**
+**Two processes on ONE machine.**
 ```
 Stats:
 Mean:	603.5 microseconds
@@ -51,4 +52,19 @@ Mean:	293.5 microseconds
 sDev:	90.0 microseconds
 Min:	144.0 microseconds
 Max:	425.1 microseconds
+```
+
+**Two processes on TWO machines.**
+```
+Stats:
+Mean:	5645.3 microseconds
+sDev:	1463.5 microseconds
+Min:	4808.9 microseconds
+Max:	9898.9 microseconds
+
+Stats w/o 1st message:
+Mean:	5205.6 microseconds
+sDev:	393.2 microseconds
+Min:	4808.9 microseconds
+Max:	5861.0 microseconds
 ```
