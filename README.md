@@ -21,6 +21,7 @@ sudo ip link set lo multicast on
 sudo ip route add 224.0.0.0/4 dev lo
 ```
 ### Test Stats
+There are overhead associated with the 1st message. Look at the stats with and without the 1st message.
 
 **Test result from single process test.**
 ```
