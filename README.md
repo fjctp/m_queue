@@ -14,13 +14,29 @@ Ran a round trip latency test in a single process (`just pubsub`) and with two p
   - Single host [NixOS]: Single process test worked out-of-the-box, but two-process test failed to discover the other due to multicast not enabled by default for `lo` device.
   - Two hosts ([NixOS] -> [MacOS]): need `zenohd` router and start python script with `--connect tcp/{ZENOH_ROUTER_IP}:7447`.
 
-```bash
-# Turn on mutlicast on loopback
-sudo ip link set lo multicast on
+### Host Configurations
+Additional configuration on device is needed for `peer` mode.
 
-# Add route for mutlicast
-sudo ip route add 224.0.0.0/4 dev lo
+1. Update firewall to allow multicast.
+
+```bash
+# Check iptable rules.
+sudo iptables -L -v -n --line-numbers
+
+# Allow multicast and put it at the top.
+sudo iptables -I nixos-fw 1 -d 224.0.0.0/4 -j nixos-fw-accept
+
+# Test multicast.
+ping 224.0.0.1
 ```
+
+2. (as needed) Turn on multicast on loopback device.
+
+```bash
+# Turn on multicast on loopback
+sudo ip link set lo multicast on
+```
+
 ### Test Stats
 There are overhead associated with the 1st message. Look at the stats with and without the 1st message.
 
